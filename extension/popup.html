@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CTShield - Certificate Transparency Guardian</title>
+
+    <!-- Modern Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="header-bar">
+      <img src="icons/icon-48.png" alt="PrismShield" class="app-icon" />
+      <div class="header-text">
+        <h1>CTShield</h1>
+        <p>Certificate Transparency Guardian</p>
+      </div>
+    </header>
+    <main class="main-content">
+      <!-- Current URL Section -->
+      <section class="section url-section">
+        <h2 class="section-title">
+          <i class="fas fa-globe"></i>
+          Current Website
+        </h2>
+        <div class="url-text" id="current-url">Loading...</div>
+      </section>
+
+      <!-- Action Section -->
+      <section class="section action-section">
+        <button id="checkBtn" class="btn-primary">
+          <i class="fas fa-shield-alt"></i>
+          Verify Certificate
+        </button>
+      </section>
+
+      <!-- Results Section -->
+      <section class="section result-section">
+        <h2 class="section-title">
+          <i class="fas fa-clipboard-check"></i>
+          Verification Results
+        </h2>
+        <div class="status-results">
+          <div class="status-box" id="status">
+            <div class="status-indicator">
+              <i class="fas fa-clock"></i>
+              Waiting for verification...
+            </div>
+          </div>
+          <div class="certificate-details" id="certDetails" style="display: none;">
+            <div class="detail-row">
+              <strong>Fingerprint:</strong>
+              <span id="certFingerprint" class="monospace"></span>
+            </div>
+            <div class="detail-row">
+              <strong>Status:</strong>
+              <span id="certStatus"></span>
+            </div>
+            <div class="detail-row">
+              <strong>Merkle Root:</strong>
+              <span id="certMerkleRoot" class="monospace"></span>
+            </div>
+            <div class="detail-row">
+              <strong>SCT Valid:</strong>
+              <span id="certSCT"></span>
+            </div>
+            <div class="detail-row">
+              <strong>Timestamp:</strong>
+              <span id="certTimestamp"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- History Section -->
+      <section class="section history-section">
+        <h2 class="section-title">
+          <i class="fas fa-history"></i>
+          Verification History
+        </h2>
+        <div class="history-list" id="historyList">
+          <!-- History items will be dynamically added here -->
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer-bar">
+      <p>© 2025 CTShield - Certificate Transparency Extension</p>
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

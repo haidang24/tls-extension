@@ -1,108 +1,301 @@
-# Certificate Transparency Browser Extension on Prism
+# CTShield - Certificate Transparency Browser Extension
 
-*Empowering Secure Web Browsing with Blockchain-Powered Certificate Verification*
+Advanced SSL/TLS certificate verification using Certificate Transparency (CT) logs with Merkle proof validation and real-time Man-in-the-Middle attack detection.
 
-**Certificate Transparency Browser Extension on Prism** is an innovative Chrome and Firefox extension that enhances web security by integrating Certificate Transparency (CT) with Prism on the Celestia blockchain. This extension verifies SSL/TLS certificates in real time, detects and prevents Man-in-the-Middle (MitM) attacks, and sets a new standard for transparent, tamper-proof certificate validation, ensuring a safer HTTPS experience for users.
+## Overview
 
----
+CTShield is a browser extension that enhances web security by verifying SSL/TLS certificates against Certificate Transparency logs. The extension uses cryptographic Merkle proof verification to ensure certificate authenticity and detect potential security threats.
 
-## 🚀 Project Highlights
+Certificate Transparency is an open framework designed to fix structural flaws in the SSL/TLS certificate ecosystem by providing an open framework for monitoring and auditing SSL certificates. CTShield implements CT verification using industry-standard cryptographic methods including Merkle Tree structures and Signed Certificate Timestamps (SCT).
 
-- **Advanced Security**: Combines Certificate Transparency (CT) logs with Prism on the Celestia blockchain for decentralized, immutable certificate verification, protecting users from sophisticated MitM attacks.
-- **User-Friendly Interface**: A sleek, intuitive popup delivers real-time verification results with a single click.
-- **Scalable Blockchain Technology**: Leverages Rust, WebAssembly, and Lumina light nodes for high performance and decentralized verification.
-- **Hackathon Innovation**: A groundbreaking solution for secure web browsing, addressing real-world security challenges in the digital age.
+## Key Features
 
----
+### Real-Time Certificate Verification
 
-## 🌟 Why This Project Stands Out
+CTShield performs real-time verification of SSL/TLS certificates when users visit websites. The extension extracts certificate information from the browser's security context and verifies it against Certificate Transparency logs.
 
-- **Market First**: One of the first browser extensions to integrate CT with blockchain technology, offering unparalleled transparency and security.
-- **Real-World Impact**: Shields users from MitM attacks—a growing threat in today’s digital landscape.
-- **Technical Excellence**: Utilizes Rust, WASM, and Celestia blockchain for optimal performance and trustless verification.
+### Merkle Proof Verification
 
----
+Implements cryptographic Merkle Tree proof verification to ensure certificates are present in CT logs without requiring full log downloads. This provides cryptographic guarantees of certificate authenticity with minimal computational overhead.
 
-## 🛠️ Key Features
+### Signed Certificate Timestamp (SCT) Validation
 
-- **Real-Time Certificate Verification**: Instantly validates SSL/TLS certificates for the current website.
-- **MitM Detection**: Flags suspicious or forged certificates with detailed alerts and blockchain-verified data.
-- **Intuitive Popup Design**: Clean interface displaying certificate status, fingerprints, validity periods, and data sources.
-- **Cross-Browser Support**: Available on Chrome, with Firefox support in development.
+Validates Signed Certificate Timestamps embedded in certificates to ensure they were logged to CT logs at issuance time. SCT validation provides additional security guarantees beyond basic certificate chain validation.
 
----
+### Man-in-the-Middle Detection
 
-## 🚀 Getting Started
+Detects potential Man-in-the-Middle (MitM) attacks by comparing presented certificates with CT log entries. Certificates not found in CT logs or with invalid Merkle proofs trigger security warnings.
 
-### Installation
+### Certificate Details Display
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/haidang24/extension_tls-
-   ```
-2. **Install on Chrome**:
-   - Open `chrome://extensions/`.
-   - Enable "Developer mode."
-   - Click "Load unpacked" and select the project folder.
-3. **Verify Installation**:
-   - The extension icon will appear in the Chrome toolbar. Click it to open the popup and start verifying certificates.
+Provides detailed certificate information including:
 
-📌 *Note: Firefox support is planned for release in the next major update.*
+- SHA-256 certificate fingerprint
+- Certificate validation status
+- Merkle root hash from CT logs
+- SCT validation status
+- Certificate timestamp
+- Security threat assessment
 
-### Usage
+### Verification History
 
-1. Click the extension icon in the browser toolbar.
-2. Select **"Verify Certificate"** to check the current website’s certificate.
-3. Review detailed results, including status (valid/invalid), fingerprints, and blockchain data from Prism.
+Maintains a local history of certificate verifications for audit purposes, allowing users to review past certificate checks and track security status over time.
 
----
+## Architecture
 
-## 🛠️ Tech Stack
+### Components
 
-- **Rust**: High-performance language for secure, efficient certificate verification logic.
-- **Prism**: Base layer on the Celestia blockchain, providing a transparent, decentralized foundation for CT logs.
-- **Lumina**: Embedded Celestia light nodes, optimized for browser integration.
-- **WebAssembly (WASM)**: Compiles Rust logic for efficient browser execution.
-- **Chrome/Firefox APIs**: Enables seamless integration and real-time functionality in browsers.
+**Browser Extension**
 
----
+- Chrome extension implementing the user interface
+- Service worker for background certificate processing
+- Content scripts for certificate extraction
+- WebAssembly module for cryptographic operations
 
-## 💡 Business Potential
+**CT Service Backend**
 
-### Market Opportunity
-Addresses a critical need for secure web browsing, targeting individual users, businesses, and government organizations.
+- Node.js/Express server managing CT log operations
+- Merkle Tree data structure implementation
+- Certificate fingerprint calculation
+- SCT generation and validation
 
-### Revenue Model
+**WASM Verification Module**
 
-- **Freemium**: Offer a free basic version with premium features (e.g., detailed analytics, enterprise support) available via subscription.
-- **Licensing**: Partner with security companies or browser providers to integrate this solution as a paid service.
-- **Scalability**: Expand in the future to mobile browsers, enterprise security platforms, and IoT certificate verification.
+- Rust-compiled WebAssembly module
+- Merkle proof verification algorithms
+- SHA-256 cryptographic hashing
+- Certificate fingerprint validation
 
----
+### Data Flow
 
-## 📧 Contact Information
+1. User initiates certificate verification via extension popup
+2. Extension extracts domain and certificate information from active tab
+3. Background service worker sends certificate data to CT service
+4. CT service calculates certificate fingerprint and queries CT logs
+5. CT service generates Merkle proof if certificate is found
+6. WASM module cryptographically verifies Merkle proof
+7. Results are displayed in extension popup with security assessment
 
-- **Team Lead**: HAIDANG
-- **GitHub**: [Repository](https://github.com/haidang24/extension_tls-)
-- **Telegram**: [NgocTran](https://t.me/ngoctran011105)
+## Installation
 
----
+### Prerequisites
 
-## 🔮 Future Roadmap
+- Node.js (v14 or higher)
+- Rust toolchain (latest stable version)
+- wasm-pack (for WebAssembly compilation)
+- Chrome or Chromium-based browser
 
-- **Browser Expansion & Threat Detection**: Launch a Firefox version and integrate real-time threat notifications for enhanced user security.
-- **Mobile & Enterprise Integration**: Expand support to mobile browsers (Chrome Mobile, Safari) and seamlessly integrate with enterprise security platforms.
-- **AI-Driven Automated Analysis**: Incorporate advanced AI algorithms to automatically analyze certificate data and threat patterns, delivering predictive insights and dynamic security responses.
-- **IoT & Industrial Verification**: Develop certificate verification modules tailored for IoT devices in smart homes and industrial applications, ensuring comprehensive security across diverse environments.
+### Build Instructions
 
----
+1. Clone the repository:
 
-## ⚠️ Development Challenges
+```bash
+git clone https://github.com/haidang24/extension_tls-
+cd tls-extension
+```
 
-- **Chrome APIs**: Encountered difficulties integrating with Chrome APIs compared to Firefox, requiring additional optimization time.
+2. Install CT service dependencies:
 
----
+```bash
+cd ct-service
+npm install
+```
 
-## 📚 Additional Resources
+3. Build WebAssembly module:
 
-- **Prism Tutorial**: https://docs.prism.rs/tutorial.html
+```bash
+cd ../wasm-verifier
+wasm-pack build --target web --out-dir ../extension/pkg
+```
+
+4. Install extension in Chrome:
+   - Open Chrome and navigate to `chrome://extensions/`
+   - Enable Developer mode
+   - Click "Load unpacked"
+   - Select the `extension` directory
+
+### Running the CT Service
+
+Start the CT service server:
+
+```bash
+cd ct-service
+npm start
+```
+
+The service runs on `http://localhost:4000` by default.
+
+## Usage
+
+1. Open the extension popup by clicking the CTShield icon in the browser toolbar
+2. Click "Verify Certificate" to check the current website's certificate
+3. Review the verification results:
+   - Certificate fingerprint
+   - Validation status
+   - Merkle root hash
+   - SCT validation status
+   - Security threat assessment
+4. Access verification history by scrolling to the history section
+
+## Security Features
+
+### Certificate Transparency
+
+CTShield leverages Certificate Transparency logs to provide public auditability of SSL/TLS certificates. All certificates issued by Certificate Authorities are logged to publicly auditable CT logs, preventing unauthorized certificate issuance.
+
+### Merkle Tree Cryptography
+
+Merkle Trees provide efficient cryptographic proofs of certificate inclusion in CT logs. CTShield implements Merkle proof verification using SHA-256 hashing to ensure certificate authenticity without requiring full log downloads.
+
+### Certificate Fingerprinting
+
+SHA-256 certificate fingerprints provide unique identification of certificates. CTShield uses standard certificate fingerprinting to match certificates against CT log entries.
+
+### Real-Time Threat Detection
+
+The extension performs real-time certificate verification on every verification request, immediately detecting certificate anomalies or potential security threats.
+
+## API Reference
+
+### CT Service Endpoints
+
+**POST /ct-check**
+Verifies a certificate against CT logs.
+
+Request:
+
+```json
+{
+  "domain": "example.com",
+  "certificate": "..."
+}
+```
+
+Response:
+
+```json
+{
+  "domain": "example.com",
+  "fingerprint": "SHA256:...",
+  "status": "valid",
+  "mitm_status": "safe",
+  "merkle_root": "...",
+  "merkle_proof": {...},
+  "sct_valid": true,
+  "timestamp": "2025-01-XX..."
+}
+```
+
+**GET /merkle-root**
+Returns the current Merkle root hash and CT log statistics.
+
+**GET /health**
+Service health check endpoint.
+
+**GET /ct-logs**
+Lists all CT log entries.
+
+## Technical Specifications
+
+### Cryptographic Algorithms
+
+- SHA-256 for certificate fingerprinting
+- Merkle Tree structures for proof generation
+- Standard CT log format compliance
+
+### WebAssembly Module
+
+The WASM module implements:
+
+- Merkle proof verification
+- SHA-256 hashing operations
+- Certificate fingerprint validation
+- Cryptographic proof validation
+
+### Browser Compatibility
+
+- Chrome 88+
+- Chromium-based browsers
+- Firefox support planned
+
+## Security Considerations
+
+### Certificate Validation
+
+CTShield validates certificates using multiple security layers:
+
+1. Certificate chain validation (browser native)
+2. CT log verification
+3. Merkle proof validation
+4. SCT validation
+
+### Privacy
+
+Certificate verification occurs locally in the browser and extension. Certificate fingerprints are sent to the CT service, but full certificate data is processed locally.
+
+### Limitations
+
+- Current implementation uses mock CT logs for demonstration
+- Production deployment requires integration with real CT log APIs
+- Certificate fetching requires browser debugger API permissions
+- Network connectivity required for CT service communication
+
+## Development
+
+### Project Structure
+
+```
+tls-extension/
+├── extension/              # Browser extension files
+│   ├── manifest.json       # Extension configuration
+│   ├── popup.html          # Extension UI
+│   ├── popup.js            # UI logic
+│   ├── background.js       # Service worker
+│   ├── wasm_loader.js      # WASM module loader
+│   ├── content.js          # Content script
+│   └── pkg/                # Compiled WASM files
+├── ct-service/             # CT service backend
+│   ├── server.js           # Express server
+│   └── package.json        # Dependencies
+└── wasm-verifier/          # Rust/WASM module
+    ├── src/
+    │   └── lib.rs          # Verification logic
+    └── Cargo.toml          # Rust dependencies
+```
+
+### Building from Source
+
+1. Install Rust dependencies:
+
+```bash
+cd wasm-verifier
+cargo build --release --target wasm32-unknown-unknown
+```
+
+2. Compile WebAssembly:
+
+```bash
+wasm-pack build --target web --out-dir ../extension/pkg
+```
+
+3. Start development server:
+
+```bash
+cd ct-service
+npm run dev
+```
+
+## References
+
+- Certificate Transparency: https://certificate.transparency.dev/
+- RFC 6962: Certificate Transparency specification
+- Google CT Logs: https://ct.googleapis.com/
+- Merkle Tree: https://en.wikipedia.org/wiki/Merkle_tree
+
+## License
+
+MIT License
+
+## Contact
+
+For questions, issues, or contributions, please refer to the project repository.

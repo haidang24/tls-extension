@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+package-lock.json
+Cargo.lock
+
+# Build artifacts
+target/
+*.wasm
+*.wat
+*.d
+*.rlib
+*.rmeta
+pkg/
+
+# Development
+*.log
+.DS_Store
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# OS files
+Thumbs.db
+Desktop.ini
+
